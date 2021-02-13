@@ -1,11 +1,10 @@
-// import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-// import 'package:temporary/constants/constants.dart';
-// import 'package:temporary/ui/text_styles.dart';
-
+import '../constants/constants.dart';
+import '../ui/text_styles.dart';
 import 'colors.dart';
 import 'project_level_data.dart';
 import 'guided_journal/gj_home.dart';

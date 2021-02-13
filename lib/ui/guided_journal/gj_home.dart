@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
-import 'package:temporary/models/gj_home_model.dart';
-import 'package:temporary/utility/transition.dart';
+import '../../models/gj_home_model.dart';
+import '../../utility/transition.dart';
 
 import '../../services/metrics.dart';
 import '../colors.dart';

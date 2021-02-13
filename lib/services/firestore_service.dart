@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:temporary/constants/constants.dart';
+import '../constants/constants.dart';
 import '../models/message_model.dart';
 import '../models/user.dart';
 import '../models/post_card_model.dart';

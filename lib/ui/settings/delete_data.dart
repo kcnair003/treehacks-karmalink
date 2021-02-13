@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:temporary/ui/widgets/content_animation.dart';
+import '../../ui/widgets/content_animation.dart';
 import '../colors.dart';
 import '../project_level_data.dart';
 import '../size_config.dart';

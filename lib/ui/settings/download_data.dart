@@ -2,10 +2,10 @@ import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:temporary/models/user.dart';
-import 'package:temporary/services/firestore_service.dart';
-import 'package:temporary/ui/widgets/content_animation.dart';
-import 'package:temporary/ui/widgets/user_stream_builder.dart';
+import '../../models/user.dart';
+import '../../services/firestore_service.dart';
+import '../../ui/widgets/content_animation.dart';
+import '../../ui/widgets/user_stream_builder.dart';
 import '../../locator.dart';
 import '../project_level_data.dart';
 import 'settings_widgets/settings_widgets.dart';

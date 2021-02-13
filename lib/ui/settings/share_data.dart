@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:temporary/ui/widgets/user_stream_builder.dart';
+import '../../ui/widgets/user_stream_builder.dart';
 import '../project_level_data.dart';
 import 'delete_data.dart';
 import '../colors.dart';

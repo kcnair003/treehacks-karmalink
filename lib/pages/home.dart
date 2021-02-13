@@ -10,6 +10,10 @@ class Home extends StatelessWidget {
   Widget buildNoAuthScreen() {
     return Column(
       children: [
+        Consumer<ThemeNotifier>(
+            builder: (context, model, space) => Switch(
+                value: model.switchUse,
+                onChanged: (switchUse) => model.toggle())),
         Image(
           image: AssetImage('assets/images/logo.png'),
           width: 500,

@@ -1,0 +1,171 @@
+import 'package:flutter_svg/svg.dart';
+import '../../colors.dart';
+import '../../size_config.dart';
+import '../../text_styles.dart';
+import 'email_password/email_password_sign_in_page.dart';
+import 'sign_in_manager.dart';
+import 'social_sign_in_button.dart';
+import '../../../common_widgets/platform_exception_alert_dialog.dart';
+import '../../../constants/strings.dart';
+import '../../../services/apple_sign_in_available.dart';
+import '../../../services/auth_service.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+class SignInPageBuilder extends StatelessWidget {
+  // P<ValueNotifier>
+  //   P<SignInManager>(valueNotifier)
+  //     SignInPage(value)
+  @override
+  Widget build(BuildContext context) {
+    final AuthService auth = Provider.of<AuthService>(context, listen: false);
+    return ChangeNotifierProvider<ValueNotifier<bool>>(
+      create: (_) => ValueNotifier<bool>(false),
+      child: Consumer<ValueNotifier<bool>>(
+        builder: (_, ValueNotifier<bool> isLoading, __) =>
+            Provider<SignInManager>(
+          create: (_) => SignInManager(auth: auth, isLoading: isLoading),
+          child: Consumer<SignInManager>(
+            builder: (_, SignInManager manager, __) => SignInPage._(
+              isLoading: isLoading.value,
+              manager: manager,
+              title: 'Firebase Auth Demo',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SignInPage extends StatelessWidget {
+  const SignInPage._({Key key, this.isLoading, this.manager, this.title})
+      : super(key: key);
+
+  final SignInManager manager;
+  final String title;
+  final bool isLoading;
+
+  static const Key googleButtonKey = Key('google');
+  static const Key emailPasswordButtonKey = Key('email-password');
+
+  Future<void> _showSignInError(
+      BuildContext context, PlatformException exception) async {
+    await PlatformExceptionAlertDialog(
+      title: Strings.signInFailed,
+      exception: exception,
+    ).show(context);
+  }
+
+  Future<void> _signInWithGoogle(BuildContext context) async {
+    try {
+      await manager.signInWithGoogle();
+    } on PlatformException catch (e) {
+      if (e.code != 'ERROR_ABORTED_BY_USER') {
+        _showSignInError(context, e);
+      }
+    }
+  }
+
+  Future<void> _signInWithApple(BuildContext context) async {
+    try {
+      await manager.signInWithApple();
+    } on PlatformException catch (e) {
+      if (e.code != 'ERROR_ABORTED_BY_USER') {
+        _showSignInError(context, e);
+      }
+    }
+  }
+
+  Future<void> _signInWithEmailAndPassword(BuildContext context) async {
+    final navigator = Navigator.of(context);
+    await EmailPasswordSignInPage.show(
+      context,
+      onSignedIn: navigator.pop,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
+    return Scaffold(
+      backgroundColor: backgroundGrey,
+      body: _buildSignIn(context),
+    );
+  }
+
+  Widget _buildHeader() {
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return Text(
+      Strings.signIn,
+      textAlign: TextAlign.center,
+      style: TextStyles.quicksand(32, orange3),
+    );
+  }
+
+  Widget _buildSignIn(BuildContext context) {
+    final appleSignInAvailable = Provider.of<AppleSignInAvailable>(context);
+    // Make content scrollable so that it fits on small screens
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SizedBox(height: 32.0),
+            SizedBox(
+              height: 50.0,
+              child: _buildHeader(),
+            ),
+            // TODO: enable when tested
+            // Visibility(
+            //   visible: appleSignInAvailable.isAvailable,
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(top: 8, bottom: 8),
+            //     child: AppleSignInButton(
+            //       // TODO: add key when supported
+            //       style: ButtonStyle.black,
+            //       type: ButtonType.signIn,
+            //       onPressed: isLoading ? null : () => _signInWithApple(context),
+            //     ),
+            //   ),
+            // ),
+            SizedBox(height: 16),
+            SocialSignInButton(
+              key: googleButtonKey,
+              assetName: 'assets/google.png',
+              text: Strings.signInWithGoogle,
+              onPressed: isLoading ? null : () => _signInWithGoogle(context),
+              color: Colors.white,
+            ),
+            SizedBox(height: 16),
+            SignInButton(
+              key: emailPasswordButtonKey,
+              text: Strings.signInWithEmailPassword,
+              onPressed:
+                  isLoading ? null : () => _signInWithEmailAndPassword(context),
+              textColor: pureBlack,
+              color: yellow3,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 64, bottom: 64),
+              child: Container(
+                height: SizeConfig.h * 50,
+                width: SizeConfig.h * 50,
+                child: SvgPicture.asset('assets/welcome.svg'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

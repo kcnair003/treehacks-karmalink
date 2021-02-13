@@ -1,0 +1,1 @@
+const int postsPerQuery = 8;

@@ -13,11 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    final appName = 'KarmaLink';
     return MaterialApp(
-      title: 'KarmaLink',
+      title: appName,
       theme: themeNotifier.selectedTheme,
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: Home(title: appName),
     );
   }
 }

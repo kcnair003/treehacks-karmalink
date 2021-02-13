@@ -33,7 +33,30 @@ def analyzeSentiment(text_phrase):
     # Uses the analyze_sentiment() method to find the overall polarity and magnitude of the text
     textPolarity = response.document_sentiment.score
     return(textPolarity)
-    
+
+def download_data(request):
+    """Responds to any HTTP request.
+    Args:
+        request (flask.Request): HTTP request object.
+    Returns:
+        The response text or any set of values that can be turned into a
+        Response object using
+        `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
+    """
+    request_json = request.get_json()
+    request.args = request.args
+    if request.args and 'user_id' in request.args:
+        return
+    elif request_json and 'user_id' in request_json:
+        try:
+            uid = request_json['user_id']
+            return
+        except Exception:
+            traceback.print_exc()
+            return
+    else:
+        return f'Hello World!'
+
 def calculate_polarity(event, context):
     """Triggered by a change to a Firestore document.
     Args:

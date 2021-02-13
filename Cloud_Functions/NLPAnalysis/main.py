@@ -19,7 +19,7 @@ import traceback
 
 import sys
 sys.path.append('/user_code/SentimentAnalysis.py')
-from SentimentAnalysis import analyzeBlobSentiment, analyzeBlobSubjectivity, analyzeVADERSentiment
+from SentimentAnalysis import analyze_blob_sentiment, analyze_blob_subjectivity, analyze_VADER_sentiment
 
 # Establishes the Firestore client
 db = firestore.Client()
@@ -36,7 +36,7 @@ def analyze_cloud_sentiment(text_phrase):
 
 #Combines different sentiment methods into one data dict
 def combine_sentiment_methods(message):
-    cloud_polarity = analyze_sentiment(message)
+    cloud_polarity = analyze_cloud_sentiment(message)
     blob_polarity = analyze_blob_sentiment(message)
     blob_subjectivity = analyze_blob_subjectivity(message)
     vader_polarity = analyze_VADER_sentiment(message)

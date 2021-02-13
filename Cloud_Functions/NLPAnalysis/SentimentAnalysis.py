@@ -13,10 +13,10 @@ def analyze_blob_subjectivity(text):
     blob = TextBlob(str(text))
     return blob.sentiment.subjectivity
 
-def analyze_VADER_sentiment(text):
-    VADERanalyzer = SentimentIntensityAnalyzer()
-    sentimentDict = VADERanalyzer.polarity_scores(text)
-    return sentimentDict['compound']
+def analyze_vader_sentiment(text):
+    vader_analyzer = SentimentIntensityAnalyzer()
+    sentiment_dict = vader_analyzer.polarity_scores(text)
+    return sentiment_dict['compound']
 """
 #The parameters that need to be passed are the text to be analyzed, a boolean to initialize TextBlob, and a boolean to initialize VADER
 class SentimentAnalyzer:

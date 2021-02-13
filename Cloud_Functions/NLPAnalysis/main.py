@@ -19,7 +19,7 @@ import traceback
 
 import sys
 sys.path.append('/user_code/SentimentAnalysis.py')
-from SentimentAnalysis import analyze_blob_sentiment, analyze_blob_subjectivity, analyze_VADER_sentiment
+from SentimentAnalysis import analyze_blob_sentiment, analyze_blob_subjectivity, analyze_vader_sentiment
 
 # Establishes the Firestore client
 db = firestore.Client()
@@ -39,8 +39,8 @@ def combine_sentiment_methods(message):
     cloud_polarity = analyze_cloud_sentiment(message)
     blob_polarity = analyze_blob_sentiment(message)
     blob_subjectivity = analyze_blob_subjectivity(message)
-    vader_polarity = analyze_VADER_sentiment(message)
-    data = { u'polarity_generated_timestamp': datetime.datetime.now(), 'Cloud_Polarity': cloud_polarity, 'TextBlob_Polarity': blob_polarity, 'TextBlob_Subjectivity': blob_subjectivity, 'VADER_Polarity': vader_polarity}
+    vader_polarity = analyze_vader_sentiment(message)
+    data = {'Cloud_Polarity': cloud_polarity, 'TextBlob_Polarity': blob_polarity, 'TextBlob_Subjectivity': blob_subjectivity, 'VADER_Polarity': vader_polarity}
     return data
 
 

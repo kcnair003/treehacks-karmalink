@@ -5,15 +5,15 @@ nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
 nltk.download('brown')
 
-def analyzeBlobSentiment(text):
+def analyze_blob_sentiment(text):
     blob = TextBlob(str(text))
     return blob.sentiment.polarity
 
-def analyzeBlobSubjectivity(text):
+def analyze_blob_subjectivity(text):
     blob = TextBlob(str(text))
     return blob.sentiment.subjectivity
 
-def analyzeVADERSentiment(text):
+def analyze_VADER_sentiment(text):
     VADERanalyzer = SentimentIntensityAnalyzer()
     sentimentDict = VADERanalyzer.polarity_scores(text)
     return sentimentDict['compound']

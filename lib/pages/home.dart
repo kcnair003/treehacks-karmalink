@@ -366,9 +366,8 @@ class _HomeState extends State<Home> {
 class MyDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool likeMinded = context.watch<HomeCubit>().state.user != null
-        ? context.watch<HomeCubit>().state.user.likeMinded
-        : true;
+    bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+
     return DropdownButton(
       value: likeMinded,
       iconEnabledColor: Colors.white,

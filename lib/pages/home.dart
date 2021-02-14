@@ -297,23 +297,6 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
       ),
       body: Center(
-        // child: Container(
-        //   height: MediaQuery.of(context).size.height,
-        //   width: MediaQuery.of(context).size.width,
-        //   decoration: BoxDecoration(
-        //     gradient: LinearGradient(
-        //       begin: Alignment.topRight,
-        //       end: Alignment.bottomLeft,
-        //       stops: [
-        //         0.2,
-        //         0.5,
-        //         0.8,
-        //       ],
-        //     colors: [
-        //       Colors.blue,
-        //       Colors.white,
-        //       Colors.red,
-        //     ])),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -323,15 +306,16 @@ class _HomeState extends State<Home> {
               height: 250,
             ),
             GestureDetector(
+                onTap: login,
                 child: Container(
-              width: 260,
-              height: 60,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/signinBtn.png'),
-                ),
-              ),
-            )),
+                  width: 260,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/signinBtn.png'),
+                    ),
+                  ),
+                )),
             Consumer<ThemeNotifier>(
                 builder: (context, model, space) => Switch(
                     value: model.switchUse,

@@ -9,13 +9,10 @@ import 'package:treehacks2021/pages/timeline.dart';
 import 'package:treehacks2021/pages/upload.dart';
 import 'package:treehacks2021/widgets/nav_bar_button.dart';
 import 'package:treehacks2021/widgets/nav_bar_item.dart';
-
-final GoogleSignIn googleSignIn = GoogleSignIn();
-
-class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
 import 'package:provider/provider.dart';
 import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
+
+final GoogleSignIn googleSignIn = GoogleSignIn();
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dynamicmodels/ThemeSelection.dart';
 import 'constants/Themes.dart';
+import 'my_navigator.dart';
 import 'pages/home.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: appName,
       theme: themeNotifier.selectedTheme,
       debugShowCheckedModeBanner: false,
+      navigatorKey: MyNavigator.navigatorKey,
       home: Home(title: appName),
     );
   }

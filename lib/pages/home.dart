@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:treehacks2021/my_navigator.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
 import 'package:treehacks2021/pages/profile.dart';
 import 'package:treehacks2021/pages/search.dart';
@@ -11,6 +12,9 @@ import 'package:treehacks2021/widgets/nav_bar_button.dart';
 import 'package:treehacks2021/widgets/nav_bar_item.dart';
 import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
 import 'package:provider/provider.dart';
+import 'package:treehacks2021/widgets/theme_switch.dart';
+
+import 'chat.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -38,7 +42,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _counter = 0;
-  bool isAuth = false;
+  bool isAuth = true;
   PageController pageController;
   int pageIndex = 0;
   List<Widget> displayWidgets;
@@ -117,6 +121,10 @@ class _HomeState extends State<Home> {
     return displayList;
   }
 
+  navigateToChat() {
+    MyNavigator.push(ChatView());
+  }
+
   manageWidgets() {
     setState(() {
       showChat = !showChat;
@@ -130,7 +138,7 @@ class _HomeState extends State<Home> {
         title: const Text('Karmalink or DialogueDen'),
         actions: [
           GestureDetector(
-            onTap: manageWidgets,
+            onTap: () => navigateToChat(),
             child: Icon(Icons.chat_bubble),
           ),
           Padding(
@@ -160,20 +168,18 @@ class _HomeState extends State<Home> {
               height: 250,
             ),
             GestureDetector(
-                onTap: login,
-                child: Container(
-                  width: 260,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/signinBtn.png'),
-                    ),
+              onTap: login,
+              child: Container(
+                width: 260,
+                height: 60,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/signinBtn.png'),
                   ),
-                )),
-            Consumer<ThemeNotifier>(
-                builder: (context, model, space) => Switch(
-                    value: model.switchUse,
-                    onChanged: (switchUse) => model.toggle())),
+                ),
+              ),
+            ),
+            ThemeSwitch(),
           ],
         ),
       ),

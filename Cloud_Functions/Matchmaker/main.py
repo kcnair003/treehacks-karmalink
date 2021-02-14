@@ -1,4 +1,3 @@
-from flask import send_file
 from google.cloud import firestore
 import os
 import json

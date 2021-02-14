@@ -67,9 +67,8 @@ def make_conversations(group_data):
         first_member = counter_list[i]
         second_member = counter_list[i+1]
         members_array = [users[first_member][0].to_dict()['uid'], users[second_member][0].to_dict()['uid']]
-        group_json = {'last_updated': datetime.datetime.now(), "members": members_array}
-        message_json = {"message": "Welcome to your new generated conversation", "sender_display_name": "System", 'time_sent': datetime.datetime.now()}
-        db.collection('groups').add(group_json).add(message_json)
+        group_json = {'last_updated': datetime.datetime.now(), "members": members_array, "messages": {"message": "Welcome to your new generated conversation", "sender_display_name": "System", 'time_sent': datetime.datetime.now()}}
+        db.collection('groups').add(group_json)
 
 def matchmaker(event, context):
     """Triggered by a change to a Firestore document.

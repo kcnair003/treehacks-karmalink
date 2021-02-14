@@ -44,8 +44,7 @@ def create_groups(tupled_user_list):
     for key, value in tupled_user_list.items():
         list_of_keys.append(key)
         list_of_values.append(value[1])
-    weights_array = [value/sum(list_of_values) for value in list_of_values]
-    temp_counter_list = random.choices(list_of_keys, weights=weights_array, k=len(list_of_keys)*2)
+    temp_counter_list = random.choices(list_of_keys, weights=list_of_values, k=len(list_of_keys)*2)
     counter_list = []
     for i in range(len(temp_counter_list)):
         if temp_counter_list[i] == temp_counter_list[i+1]:

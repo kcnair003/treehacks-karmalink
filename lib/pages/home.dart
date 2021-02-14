@@ -80,8 +80,8 @@ class _HomeState extends State<Home> {
 //         });
 //       }
 
-    UserK _user = context.read<AuthCubit>().state.user;
-
+    _user = context.read<AuthCubit>().state.user;
+//
     pageController = PageController();
   }
 

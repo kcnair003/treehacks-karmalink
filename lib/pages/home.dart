@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
@@ -33,7 +35,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _counter = 0;
   bool isAuth = false;
   PageController pageController;
@@ -65,7 +66,6 @@ class _HomeState extends State<Home> {
     pageController.dispose();
     super.dispose();
   }
-
 
   login() {
     googleSignIn.signIn();
@@ -265,49 +265,25 @@ class _HomeState extends State<Home> {
   //   );
   // }
 
-  Widget buildNoAuthScreen() {
-    return Column(
-      children: [
-        Image(
-          image: AssetImage('assets/images/logo.png'),
-          width: 500,
-          height: 250,
-        ),
-        GestureDetector(
-          onTap: login,
-          child: Container(
-            width: 260,
-            height: 60,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/signinBtn.png'),
-              ),
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-  
   Widget buildNoAuthScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [
-                0.2,
-                0.5,
-                0.8,
-              ],
-            colors: [
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: [
+              0.2,
+              0.5,
+              0.8,
+            ],
+                colors: [
               Colors.blue,
               Colors.white,
               Colors.red,
@@ -319,7 +295,6 @@ class _HomeState extends State<Home> {
               image: AssetImage('assets/images/logo.png'),
               width: 500,
               height: 250,
-
             ),
             GestureDetector(
                 child: Container(
@@ -335,14 +310,9 @@ class _HomeState extends State<Home> {
                 builder: (context, model, space) => Switch(
                     value: model.switchUse,
                     onChanged: (switchUse) => model.toggle())),
-            ],
-          ),
-        )
-
-      ],
-
-      ),
-
+          ],
+        ),
+      )),
     );
   }
 

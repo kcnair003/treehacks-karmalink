@@ -44,7 +44,7 @@ def create_groups(tupled_user_list):
         list_of_keys.append(key)
         list_of_values.append(value[1])
     weights_norm = np.linalg.norm(np.array(list_of_values))
-    weights_normed = np.array([abs(weight/weights_norm) for weight in list_of_values])
+    weights_normed = np.array([np.nan_to_num(abs(weight/weights_norm)) for weight in list_of_values])
     weights_array = weights_normed / weights_normed.sum()
     weights_reduced = np.nan_to_num(weights_array)
     weights_scaled = weights_reduced.tolist()

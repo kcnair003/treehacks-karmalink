@@ -46,7 +46,8 @@ def create_groups(tupled_user_list):
     weights_norm = np.linalg.norm(np.array(list_of_values))
     weights_normed = np.array([abs(weight/weights_norm) for weight in list_of_values])
     weights_array = weights_normed / weights_normed.sum()
-    weights_scaled = weights_array.tolist()
+    weights_reduced = np.nan_to_num(weights_array)
+    weights_scaled = weights_reduced.tolist()
     counter_list = np.random.choice(list_of_keys, len(list_of_keys), replace=False, p=weights_scaled)
     group_data = (tupled_user_list, counter_list)
     return group_data
@@ -67,7 +68,8 @@ def make_conversations(group_data):
         second_member = counter_list[i+1]
         members_array = [users[first_member][0].to_dict()['uid'], users[second_member][0].to_dict()['uid']]
         group_json = {'last_updated': datetime.datetime.now(), "members": members_array}
-        db.collection('groups').add(group_json)
+        message_json = {"message": "Welcome to your new generated conversation", "sender_display_name": "System", 'time_sent': datetime.datetime.now()}
+        db.collection('groups').add(group_json).add(message_json)
 
 def matchmaker(event, context):
     """Triggered by a change to a Firestore document.

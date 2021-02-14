@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
-import 'package:treehacks2021/pages/display-items.dart';
 import 'package:treehacks2021/pages/profile.dart';
 import 'package:treehacks2021/pages/search.dart';
 import 'package:treehacks2021/pages/timeline.dart';
@@ -40,18 +40,40 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+String pendingPost = "";
+addPost() {
+  if (pendingPost != "") {
+    var currUser = FirebaseAuth.instance.currentUser;
+
+    usersRef.doc(currUser.uid).get().then((value) {
+      postsRef.add({
+        "message": pendingPost,
+        "user_id": currUser.uid,
+        "time_posted": DateTime.now(),
+        "username": value.data()["username"]
+      });
+    });
+    print("Post ADDED TO FIREBASE");
+  }
+}
+
+changeContent(value) {
+  pendingPost = value;
+}
+
 class _HomeState extends State<Home> {
   int _counter = 0;
   bool isAuth = false;
   PageController pageController;
   int pageIndex = 0;
   List<Widget> displayWidgets;
-  List<Object> posts;
+  List<Map> posts = [];
   bool showChat = false;
+
   // get width => null;
   @override
   void initState() {
-    posts = getPosts();
+    getPosts();
     super.initState();
     pageController = PageController();
     displayWidgets = displayList;
@@ -72,7 +94,15 @@ class _HomeState extends State<Home> {
   getPosts() {
     postsRef.get().then((QuerySnapshot snapshot) {
       snapshot.docs.forEach((DocumentSnapshot doc) {
-        ;
+        Map temp = new Map.from(doc.data());
+        print(temp["user_id"]);
+        usersRef.doc(temp["user_id"]).get().then((value) {
+          temp["username"] = value.data()["username"] == null
+              ? "person"
+              : value.data()["username"];
+          print(temp);
+          posts.add(temp);
+        });
       });
     });
   }
@@ -111,7 +141,29 @@ class _HomeState extends State<Home> {
           height: double.infinity,
           color: Colors.lightGreen,
           child: Column(
-            children: feedsListItems,
+            children: [
+              TextField(
+                onChanged: (value) => {changeContent(value)},
+                decoration: InputDecoration(
+                  hintText: 'Write Something...',
+                  contentPadding: EdgeInsets.all(20.0),
+                ),
+              ),
+              OutlinedButton(
+                  onPressed: () => {addPost()},
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.post_add_rounded,
+                        color: Colors.black,
+                      ),
+                      Text(
+                        "Make a Post",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ))
+            ],
           )),
     ),
     SizedBox(width: 3),

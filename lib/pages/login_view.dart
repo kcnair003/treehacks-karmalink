@@ -62,7 +62,7 @@ class _SignInWithEmailAndPasswordState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign into Monaco'),
+        title: Text('Sign into Civil Discord'),
       ),
       body: Center(
         child: Padding(
@@ -123,6 +123,12 @@ class _SignInWithEmailAndPasswordState
                     ForgotPasswordView(),
                   ),
                   child: Text('Forgot password'),
+                ),
+                SizedBox(height: 70),
+                Image(
+                  image: AssetImage('assets/images/civil.png'),
+                  width: 500,
+                  height: 250,
                 ),
               ],
             ),

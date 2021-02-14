@@ -46,7 +46,6 @@ class _HomeState extends State<Home> {
 
   PageController pageController;
   int pageIndex = 0;
-  List<Widget> displayWidgets;
   List<Map> posts = [];
   bool showNewPost = false;
   List<Widget> displayList = [];
@@ -80,18 +79,21 @@ class _HomeState extends State<Home> {
     UserK _user = context.read<AuthCubit>().state.user;
 
     pageController = PageController();
-    displayWidgets = displayList;
   }
 
   getPosts() {
+    print("GETTING POSTTTTT");
     postsRef.get().then((QuerySnapshot snapshot) {
       snapshot.docs.forEach((DocumentSnapshot doc) {
         Map temp = new Map.from(doc.data());
+
+        print("anyyyy (********( data?");
         print(temp["user_id"]);
         usersRef.doc(temp["user_id"]).get().then((value) {
           temp["display_name"] = value.data()["display_name"] == null
               ? "person"
               : value.data()["display_name"];
+          print("dataaaaa ------");
           print(temp);
           posts.add(temp);
         });
@@ -120,7 +122,7 @@ class _HomeState extends State<Home> {
   Color notSelected = Colors.lightBlue;
 
   addToDisplayList(bool isFeed) {
-    // getPosts();
+    getPosts();
     print(posts.length);
     print(posts.length);
     displayList.add(Expanded(
@@ -128,6 +130,7 @@ class _HomeState extends State<Home> {
         child: ListView.builder(
             itemCount: posts.length,
             itemBuilder: (context, index) {
+              print("addddding ########");
               print(index);
               print(posts[index]);
               return PostCard(
@@ -258,38 +261,6 @@ class _HomeState extends State<Home> {
     MyNavigator.push(ChatView());
   }
 
-  Scaffold buildAuthScreen() {
-    // getPosts();
-    // addToDisplayList();
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Karmalink or DialogueDen'),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: GestureDetector(
-              onTap: manageWidgets,
-              child: Icon(Icons.post_add_rounded, size: 45),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: GestureDetector(
-              onTap: navigateToChat,
-              child: Icon(Icons.chat_bubble, size: 36),
-            ),
-          ),
-          // Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 16),
-          //   child: GestureDetector(onTap: logout, child: Icon(Icons.logout)),
-          //             ),
-        ],
-      ),
-      body: Row(
-        children: showNewPost ? getAll() : getFeed(),
-      ),
-    );
-  }
   // class MyDropDown extends StatefulWidget {
   //   MyDropDown({Key key}) : super(key: key);
 
@@ -336,16 +307,25 @@ class _HomeState extends State<Home> {
       create: (_) => HomeCubit(_user),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Karmalink or DialogueDen'),
+          title: const Text('Civil Discord'),
           actions: [
             ThemeSwitch(),
             SizedBox(width: 16),
             // MyDropDown(),
             SizedBox(width: 16),
-            GestureDetector(
-              onTap: () => navigateToChat(),
-              child: Icon(Icons.chat_bubble),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: GestureDetector(
+                onTap: manageWidgets,
+                child: Icon(Icons.post_add_rounded, size: 45),
+              ),
             ),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: GestureDetector(
+                  onTap: () => navigateToChat(),
+                  child: Icon(Icons.chat_bubble),
+                )),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: GestureDetector(

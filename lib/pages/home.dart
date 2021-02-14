@@ -9,13 +9,14 @@ import 'package:treehacks2021/pages/timeline.dart';
 import 'package:treehacks2021/pages/upload.dart';
 import 'package:treehacks2021/widgets/nav_bar_button.dart';
 import 'package:treehacks2021/widgets/nav_bar_item.dart';
+import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
+import 'package:provider/provider.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
-import 'package:provider/provider.dart';
-import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
+// class Home extends StatefulWidget {
+//   Home({Key key}) : super(key: key);
+// import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -36,7 +37,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int _counter = 0;
   bool isAuth = false;
   PageController pageController;
@@ -68,7 +68,6 @@ class _HomeState extends State<Home> {
     pageController.dispose();
     super.dispose();
   }
-
 
   login() {
     googleSignIn.signIn();
@@ -268,53 +267,53 @@ class _HomeState extends State<Home> {
   //   );
   // }
 
-  Widget buildNoAuthScreen() {
-    return Column(
-      children: [
-        Image(
-          image: AssetImage('assets/images/logo.png'),
-          width: 500,
-          height: 250,
-        ),
-        GestureDetector(
-          onTap: login,
-          child: Container(
-            width: 260,
-            height: 60,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/signinBtn.png'),
-              ),
+  // Widget buildNoAuthScreen() {
+  // return Column(
+  //   children: [
+  //     Image(
+  //       image: AssetImage('assets/images/logo.png'),
+  //       width: 500,
+  //       height: 250,
+  //     ),
+  //     GestureDetector(
+  //       onTap: login,
+  //       child: Container(
+  //         width: 260,
+  //         height: 60,
+  //         decoration: BoxDecoration(
+  //           image: DecorationImage(
+  //             image: AssetImage('assets/images/signinBtn.png'),
+  //           ),
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-  
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _counter++;
+  //   });
+  // }
+
   Widget buildNoAuthScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [
-                0.2,
-                0.5,
-                0.8,
-              ],
-            colors: [
-              Colors.blue,
-              Colors.white,
-              Colors.red,
-            ])),
+        // child: Container(
+        //   height: MediaQuery.of(context).size.height,
+        //   width: MediaQuery.of(context).size.width,
+        //   decoration: BoxDecoration(
+        //     gradient: LinearGradient(
+        //       begin: Alignment.topRight,
+        //       end: Alignment.bottomLeft,
+        //       stops: [
+        //         0.2,
+        //         0.5,
+        //         0.8,
+        //       ],
+        //     colors: [
+        //       Colors.blue,
+        //       Colors.white,
+        //       Colors.red,
+        //     ])),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -322,7 +321,6 @@ class _HomeState extends State<Home> {
               image: AssetImage('assets/images/logo.png'),
               width: 500,
               height: 250,
-
             ),
             GestureDetector(
                 child: Container(
@@ -338,14 +336,9 @@ class _HomeState extends State<Home> {
                 builder: (context, model, space) => Switch(
                     value: model.switchUse,
                     onChanged: (switchUse) => model.toggle())),
-            ],
-          ),
-        )
-
-      ],
-
+          ],
+        ),
       ),
-
     );
   }
 

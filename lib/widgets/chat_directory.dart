@@ -42,10 +42,10 @@ class GroupView extends StatelessWidget {
 
   final _firestoreService = FirestoreService();
 
-  Future<List<User>> users() async {
-    List<User> users = [];
+  Future<List<UserK>> users() async {
+    List<UserK> users = [];
     for (var uid in group.memberUids) {
-      User user = await _firestoreService.getUser(uid);
+      UserK user = await _firestoreService.getUser(uid);
       print(user);
       users.add(user);
     }

@@ -10,7 +10,7 @@ enum AuthLifeCycle {
 
 class AuthState extends Equatable {
   final AuthLifeCycle status;
-  final User user;
+  final UserK user;
   final String signInWithEmailAndPasswordError;
   final String createAnAccountError;
   final String forgotPasswordError;
@@ -25,7 +25,7 @@ class AuthState extends Equatable {
 
   AuthState copyWith({
     AuthLifeCycle status,
-    User user,
+    UserK user,
     String errorMessage,
     String signInWithEmailAndPasswordError,
     String createAnAccountError,

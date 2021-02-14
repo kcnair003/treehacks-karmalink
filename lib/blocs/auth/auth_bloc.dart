@@ -13,7 +13,7 @@ import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit({this.userStream}) : super(AuthState()) {
-    _userSubscription = userStream.listen((User user) {
+    _userSubscription = userStream.listen((UserK user) {
       _userValue = user;
       _determineUserTrack();
     });
@@ -23,9 +23,9 @@ class AuthCubit extends Cubit<AuthState> {
   final _firestoreService = FirestoreService();
   final _auth = FirebaseAuthService();
 
-  final Stream<User> userStream;
+  final Stream<UserK> userStream;
   StreamSubscription _userSubscription;
-  User _userValue = User();
+  UserK _userValue = UserK();
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     if (email == null || email.isEmpty) {
@@ -65,7 +65,7 @@ class AuthCubit extends Cubit<AuthState> {
       UserCredential cred =
           await _auth.createUserWithEmailAndPassword(email, password);
       await _firestoreService.addUser(
-        User(
+        UserK(
           uid: cred.user.uid,
           email: email,
           displayName: displayName,
@@ -96,7 +96,7 @@ class AuthCubit extends Cubit<AuthState> {
         status: AuthLifeCycle.unauthenticated,
       ));
     } else if (_userValue.status == UserLifeCycle.authenticated) {
-      User userFromDB = await _firestoreService.getUser(_userValue.uid);
+      UserK userFromDB = await _firestoreService.getUser(_userValue.uid);
       emit(state.copyWith(
         status: AuthLifeCycle.authenticated,
         user: _userValue.copyWith(

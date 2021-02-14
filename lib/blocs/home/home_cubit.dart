@@ -6,7 +6,7 @@ import 'package:treehacks2021/services/services.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(User user) : super(HomeState(user: user));
+  HomeCubit(UserK user) : super(HomeState(user: user));
 
   final _firestoreService = FirestoreService();
 

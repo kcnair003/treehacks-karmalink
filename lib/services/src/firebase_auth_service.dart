@@ -5,10 +5,10 @@ import '../../models/models.dart';
 class FirebaseAuthService {
   final firebaseAuth.FirebaseAuth _auth = firebaseAuth.FirebaseAuth.instance;
 
-  Stream<User> get user {
+  Stream<UserK> get user {
     return _auth.authStateChanges().map((firebaseUser) {
       return firebaseUser == null
-          ? User(status: UserLifeCycle.unauthenticated)
+          ? UserK(status: UserLifeCycle.unauthenticated)
           : firebaseUser.toUser;
     });
   }
@@ -52,8 +52,8 @@ class FirebaseAuthService {
 }
 
 extension on firebaseAuth.User {
-  User get toUser {
-    return User(
+  UserK get toUser {
+    return UserK(
       status: UserLifeCycle.authenticated,
       uid: this.uid,
       email: this.email,

@@ -8,7 +8,7 @@ class Group extends Equatable {
   final String id;
   final List<dynamic> memberUids;
   final Timestamp lastUpdated;
-  final List<User> users;
+  final List<UserK> users;
 
   Group({
     this.id,
@@ -29,9 +29,9 @@ class Group extends Equatable {
   final _firestoreService = FirestoreService();
 
   Future<Group> queryMemberData() async {
-    List<User> _usersFetched = [];
+    List<UserK> _usersFetched = [];
     for (var uid in memberUids) {
-      User user = await _firestoreService.getUser(uid);
+      UserK user = await _firestoreService.getUser(uid);
       _usersFetched.add(user);
     }
     return copyWith(users: _usersFetched);
@@ -60,7 +60,7 @@ class Group extends Equatable {
     String id,
     List<dynamic> memberUids,
     Timestamp lastUpdated,
-    List<User> users,
+    List<UserK> users,
   }) {
     return Group(
       id: id ?? this.id,

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../models/src/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:treehacks2021/blocs/blocs.dart';
 import 'package:treehacks2021/models/models.dart';
@@ -30,14 +30,11 @@ final usersRef = FirebaseFirestore.instance.collection('users');
 // import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-
   Home({Key key, this.title}) : super(key: key);
 
   final String title;
 
   // Home({Key key}) : super(key: key);
-
-
   @override
   _HomeState createState() => _HomeState();
 }
@@ -56,7 +53,7 @@ class _HomeState extends State<Home> {
   String pendingPost = "";
   // get width => null;
 
-  User _user;
+  UserK _user;
 
   @override
   void initState() {
@@ -80,11 +77,10 @@ class _HomeState extends State<Home> {
 //         });
 //       }
 
-    _user = context.read<AuthCubit>().state.user;
+    UserK _user = context.read<AuthCubit>().state.user;
 
     pageController = PageController();
     displayWidgets = displayList;
-
   }
 
   getPosts() {
@@ -132,9 +128,7 @@ class _HomeState extends State<Home> {
         child: ListView.builder(
             itemCount: posts.length,
             itemBuilder: (context, index) {
-              print("Printing LIIII  ****** ");
               print(index);
-              print("above is index");
               print(posts[index]);
               return PostCard(
                   posts[index]["message"], posts[index]["display_name"]);
@@ -253,7 +247,6 @@ class _HomeState extends State<Home> {
     return displayList;
   }
 
-
   manageWidgets() {
     setState(() {
       showNewPost = !showNewPost;
@@ -263,8 +256,8 @@ class _HomeState extends State<Home> {
 
   navigateToChat() {
     MyNavigator.push(ChatView());
-
   }
+
   Scaffold buildAuthScreen() {
     // getPosts();
     // addToDisplayList();
@@ -290,91 +283,84 @@ class _HomeState extends State<Home> {
           //   padding: EdgeInsets.symmetric(horizontal: 16),
           //   child: GestureDetector(onTap: logout, child: Icon(Icons.logout)),
           //             ),
-                    ],
-                  ),
-                  body: Row(
-                    children: showNewPost ? getAll() : getFeed(),
-                  ),
-                );
-  
-            
-            
-      
-              
+        ],
+      ),
+      body: Row(
+        children: showNewPost ? getAll() : getFeed(),
+      ),
+    );
   }
-            // class MyDropDown extends StatefulWidget {
-            //   MyDropDown({Key key}) : super(key: key);
-            
-            //   @override
-            //   _MyDropDownState createState() => _MyDropDownState();
-            // }
-            
-            // class _MyDropDownState extends State<MyDropDown> {
-            //   @override
-            //   Widget build(BuildContext context) {
-            //     return Container(
-            //        child: child,
-            //     );
-            //   }
-            // }
-            class MyDropDown extends StatelessWidget {
-              @override
-              Widget build(BuildContext context) {
-                bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
-                return DropdownButton(
-                  value: likeMinded,
-                  iconEnabledColor: Colors.white,
-                  underline: Container(
-                    height: 2,
-                    color: Colors.white,
-                  ),
-                  onChanged: (_) => context.read<HomeCubit>().toggleLikeMinded(),
-                  items: [
-                    DropdownMenuItem(
-                      value: true,
-                      child: Text('like-minded'),
-                    ),
-                    DropdownMenuItem(
-                      value: false,
-                      child: Text('different-minded'),
-                    ),
-                  ],
-                );
-              }
-            }
-@override
-Widget build(BuildContext context) {
-                return BlocProvider(
-                  create: (_) => HomeCubit(_user),
-                  child: Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Karmalink or DialogueDen'),
-                      actions: [
-                        ThemeSwitch(),
-                        SizedBox(width: 16),
-                        MyDropDown(),
-                        SizedBox(width: 16),
-                        GestureDetector(
-                          onTap: () => navigateToChat(),
-                          child: Icon(Icons.chat_bubble),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: GestureDetector(
-                            onTap: () {
-                              context.read<AuthCubit>().signOut();
-                            },
-                            child: Icon(Icons.logout),
-                          ),
-                        ),
-                      ],
-                    ),
-                    body: Row(
-                      children: showNewPost ? getAll() : getFeed(),
-                    ),
-                  ),
-                );
-              }
+  // class MyDropDown extends StatefulWidget {
+  //   MyDropDown({Key key}) : super(key: key);
 
-            
-     
+  //   @override
+  //   _MyDropDownState createState() => _MyDropDownState();
+  // }
+
+  // class _MyDropDownState extends State<MyDropDown> {
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     return Container(
+  //        child: child,
+  //     );
+  //   }
+  // }
+  // class MyDropDown extends StatelessWidget {
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+  //     return DropdownButton(
+  //       value: likeMinded,
+  //       iconEnabledColor: Colors.white,
+  //       underline: Container(
+  //         height: 2,
+  //         color: Colors.white,
+  //       ),
+  //       onChanged: (_) => context.read<HomeCubit>().toggleLikeMinded(),
+  //       items: [
+  //         DropdownMenuItem(
+  //           value: true,
+  //           child: Text('like-minded'),
+  //         ),
+  //         DropdownMenuItem(
+  //           value: false,
+  //           child: Text('different-minded'),
+  //         ),
+  //       ],
+  //     );
+  //   }
+  // }
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeCubit(_user),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Karmalink or DialogueDen'),
+          actions: [
+            ThemeSwitch(),
+            SizedBox(width: 16),
+            // MyDropDown(),
+            SizedBox(width: 16),
+            GestureDetector(
+              onTap: () => navigateToChat(),
+              child: Icon(Icons.chat_bubble),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: GestureDetector(
+                onTap: () {
+                  context.read<AuthCubit>().signOut();
+                },
+                child: Icon(Icons.logout),
+              ),
+            ),
+          ],
+        ),
+        body: Row(
+          children: showNewPost ? getAll() : getFeed(),
+        ),
+      ),
+    );
+  }
+}

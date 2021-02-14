@@ -72,7 +72,7 @@ class _MyTextFieldState extends State<MyTextField> {
   @override
   Widget build(BuildContext context) {
     ChatState state = context.watch<ChatCubit>().state;
-    User user = context.watch<AuthCubit>().state.user;
+    UserK user = context.watch<AuthCubit>().state.user;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(

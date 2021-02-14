@@ -9,7 +9,7 @@ enum UserLifeCycle {
 
 /// A user with data collected by Oil Finder. Not to be confused with the User class
 /// in Firebase Auth.
-class User extends Equatable {
+class UserK extends Equatable {
   /// Defaults to UserLifeCycle.unknown
   final UserLifeCycle status;
   final String uid;
@@ -19,7 +19,7 @@ class User extends Equatable {
   /// True represents like-minded and false represents different-minded.
   final bool likeMinded;
 
-  const User({
+  const UserK({
     this.status = UserLifeCycle.unknown,
     this.uid = '',
     this.email,
@@ -35,8 +35,8 @@ class User extends Equatable {
     };
   }
 
-  static User fromMap(Map<String, dynamic> map) {
-    return User(
+  static UserK fromMap(Map<String, dynamic> map) {
+    return UserK(
       uid: map['uid'],
       email: map['email'],
       displayName: map['display_name'],
@@ -44,13 +44,13 @@ class User extends Equatable {
     );
   }
 
-  User copyWith({
+  UserK copyWith({
     String uid,
     String email,
     String displayName,
     bool likeMinded,
   }) {
-    return User(
+    return UserK(
       uid: uid ?? this.uid,
       email: email ?? this.email,
       displayName: displayName ?? this.displayName,

@@ -5,12 +5,12 @@ import 'package:treehacks2021/models/src/message.dart';
 class FirestoreService {
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
 
-  Future<User> getUser(String uid) async {
+  Future<UserK> getUser(String uid) async {
     DocumentSnapshot doc = await _instance.collection('users').doc(uid).get();
-    return User.fromMap(doc.data());
+    return UserK.fromMap(doc.data());
   }
 
-  Future<void> addUser(User user) async {
+  Future<void> addUser(UserK user) async {
     await _instance.collection('users').doc(user.uid).set(user.toMap());
   }
 

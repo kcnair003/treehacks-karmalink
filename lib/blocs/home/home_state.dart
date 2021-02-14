@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:treehacks2021/models/models.dart';
 
 class HomeState extends Equatable {
-  final User user;
+  final UserK user;
 
   HomeState({this.user});
 
   HomeState copyWith({
-    User user,
+    UserK user,
   }) {
     return HomeState(
       user: user ?? this.user,

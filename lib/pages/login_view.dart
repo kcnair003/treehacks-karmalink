@@ -48,8 +48,8 @@ class SignInWithEmailAndPassword extends StatefulWidget {
 class _SignInWithEmailAndPasswordState
     extends State<SignInWithEmailAndPassword> {
   final _emailController =
-      TextEditingController(text: 'spencerchubb@gmail.com');
-  final _passwordController = TextEditingController(text: 'ILOVEHESPR69');
+      TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {

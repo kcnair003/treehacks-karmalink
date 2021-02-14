@@ -40,28 +40,10 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-String pendingPost = "";
-addPost() {
-  if (pendingPost != "") {
-    var currUser = FirebaseAuth.instance.currentUser;
-
-    usersRef.doc(currUser.uid).get().then((value) {
-      postsRef.add({
-        "message": pendingPost,
-        "user_id": currUser.uid,
-        "time_posted": DateTime.now(),
-        "username": value.data()["username"]
-      });
-    });
-    print("Post ADDED TO FIREBASE");
-  }
-}
-
-changeContent(value) {
-  pendingPost = value;
-}
-
+// ////////   THIS IS HOMESTATE
 class _HomeState extends State<Home> {
+  String pendingPost = "";
+
   int _counter = 0;
   bool isAuth = false;
   PageController pageController;
@@ -69,17 +51,21 @@ class _HomeState extends State<Home> {
   List<Widget> displayWidgets;
   List<Map> posts = [];
   bool showChat = false;
-
+  List<Widget> displayList = [];
   // get width => null;
   @override
   void initState() {
+    // final currUser = FirebaseAuth.instance.currentUser;
     getPosts();
+    addToDisplayList(true);
     super.initState();
+
     pageController = PageController();
-    displayWidgets = displayList;
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       if (account != null) {
         print(account);
+        print("enddddd");
+
         setState(() {
           isAuth = true;
         });
@@ -135,52 +121,110 @@ class _HomeState extends State<Home> {
   Color selected = Colors.orange;
   Color notSelected = Colors.lightBlue;
 
-  List<Widget> displayList = [
-    Expanded(
+  addToDisplayList(bool isFeed) {
+    // getPosts();
+    print(posts.length);
+    print(posts.length);
+    displayList.add(Expanded(
       child: Container(
+        child: ListView.builder(
+            itemCount: posts.length,
+            itemBuilder: (context, index) {
+              print("Printing LIIII  ****** ");
+              print(index);
+              print("above is index");
+              print(posts[index]);
+              return ListTile(title: Text(posts[index]["message"]));
+            }),
+      ),
+    ));
+    if (isFeed == false) {
+      displayList.add(SizedBox(width: 3));
+
+      // displayList.add(Expanded)
+      displayList.add(Expanded(
+        child: Container(
           height: double.infinity,
           color: Colors.lightGreen,
           child: Column(
             children: [
+              Container(
+                width: showChat ? 200 : double.infinity,
+                height: 200,
+              ),
               TextField(
-                onChanged: (value) => {changeContent(value)},
+                onChanged: (value) {
+                  setState(() {
+                    pendingPost = value;
+                  });
+                  print(pendingPost);
+                },
                 decoration: InputDecoration(
                   hintText: 'Write Something...',
                   contentPadding: EdgeInsets.all(20.0),
                 ),
               ),
               OutlinedButton(
-                  onPressed: () => {addPost()},
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.post_add_rounded,
-                        color: Colors.black,
-                      ),
-                      Text(
-                        "Make a Post",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ],
-                  ))
+                onPressed: () {
+                  final currUser = FirebaseAuth.instance.currentUser;
+                  if (pendingPost != "") {
+                    print("OutlineddButton onPressed");
+                    print(currUser);
+                    print(isAuth);
+                    print(pendingPost);
+                    usersRef.doc(currUser.uid).get().then((value) {
+                      postsRef.add({
+                        "message": pendingPost,
+                        "user_id": currUser.uid,
+                        "time_posted": DateTime.now(),
+                        "username": value.data()["username"]
+                      });
+                    });
+                    // print("Post ADDED TO FIREBASE");
+                  }
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.post_add_rounded,
+                      color: Colors.black,
+                    ),
+                    Text(
+                      "Make a Post",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+              // Container(
+              //   child: ListView.builder(
+              //       itemCount: posts.length,
+              //       itemBuilder: (context, index) {
+              //         return ListTile(title: posts[index]["message"]);
+              //       }),
+              // )
             ],
-          )),
-    ),
-    SizedBox(width: 3),
-    Expanded(
-      child: Container(
-        height: double.infinity,
-        color: Colors.lightBlue,
-        child: Text("Hello"),
-      ),
-    ),
-  ];
+          ),
+        ),
+      ));
+    }
+
+    print("DONE addToDisplayList");
+  }
+
+  changeContent(value) {
+    pendingPost = value;
+  }
 
   List<Widget> getFeed() {
-    return [displayList[0]];
+    displayList = [];
+    addToDisplayList(true);
+    return displayList;
   }
 
   List<Widget> getAll() {
+    displayList = [];
+    addToDisplayList(false);
     return displayList;
   }
 
@@ -192,10 +236,16 @@ class _HomeState extends State<Home> {
   }
 
   Scaffold buildAuthScreen() {
+    // getPosts();
+    // addToDisplayList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Karmalink or DialogueDen'),
         actions: [
+          GestureDetector(
+            onTap: manageWidgets,
+            child: Icon(Icons.post_add_rounded),
+          ),
           GestureDetector(
             onTap: manageWidgets,
             child: Icon(Icons.chat_bubble),

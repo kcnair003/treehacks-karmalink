@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
+import 'package:treehacks2021/pages/display-items.dart';
 import 'package:treehacks2021/pages/profile.dart';
 import 'package:treehacks2021/pages/search.dart';
 import 'package:treehacks2021/pages/timeline.dart';
@@ -94,10 +95,11 @@ class _HomeState extends State<Home> {
   List<Widget> displayList = [
     Expanded(
       child: Container(
-        height: double.infinity,
-        color: Colors.lightGreen,
-        child: Text("Hello"),
-      ),
+          height: double.infinity,
+          color: Colors.lightGreen,
+          child: Column(
+            children: feedsListItems,
+          )),
     ),
     SizedBox(width: 3),
     Expanded(

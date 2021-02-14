@@ -62,7 +62,7 @@ def create_random_groups(tupled_user_list):
     temp_counter_list = random.choices(list_of_keys, k=len(list_of_keys)*2)
     counter_list = []
     for i in range(len(temp_counter_list)):
-        if temp_counter_list[i] == temp_counter_list[i+1]:
+        if temp_counter_list[i] == temp_counter_list[i+1] and i<len(temp_counter_list)-2:
             counter_list.append(temp_counter_list[i])
             i += 1
         else:

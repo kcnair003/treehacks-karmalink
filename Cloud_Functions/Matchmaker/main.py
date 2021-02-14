@@ -24,7 +24,10 @@ def find_posts(tupled_user_list):
     for doc in posts_ref_docs:
         doc_dict = doc.to_dict()
         doc_score = (doc_dict['Cloud_Polarity']+doc_dict['VADER_Polarity']+doc_dict['TextBlob_Polarity']/3)*doc_dict['TextBlob_Subjectivity']
-        new_user_list[doc_dict['user_id']] = (new_user_list[doc_dict['user_id']][0], new_user_list[doc_dict['user_id']][0]+doc_score)
+        try:
+            new_user_list[doc_dict['user_id']] = (new_user_list[doc_dict['user_id']][0], new_user_list[doc_dict['user_id']][0]+doc_score)
+        except Exception:
+            traceback.print_exc
     return new_user_list
 
 def delete_groups():

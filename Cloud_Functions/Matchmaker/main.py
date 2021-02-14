@@ -40,12 +40,10 @@ def delete_groups():
 
 def create_groups(tupled_user_list):
     list_of_keys = []
-    list_of_values = []
     for key, value in tupled_user_list.items():
-        list_of_keys.append(key)
-        list_of_values.append(value[1])
-    temp_counter_list = random.choices(list_of_keys, weights=list_of_values, k=len(list_of_keys)*2)
-    counter_list = list(set(temp_counter_list))
+        list_of_keys.append((key, value[1]))
+    list_of_keys.sort(key=lambda tup: tup[1], reverse=True)
+    counter_list = [value[0] for value in list_of_keys]
     group_data = (tupled_user_list, counter_list)
     return group_data
 

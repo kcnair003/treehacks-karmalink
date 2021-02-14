@@ -51,18 +51,17 @@ def create_random_groups(tupled_user_list):
     list_of_keys = []
     for key in tupled_user_list:
         list_of_keys.append(key)
-    counter_list = random.choices(list_of_keys, k=len(list_of_keys)*2)
+    counter_list = random.choices(list_of_keys, k=len(list_of_keys))
     group_data = (tupled_user_list, counter_list)
     return group_data
 
 def make_conversations(group_data):
     users = group_data[0]
     counter_list = group_data[1]
-    for i in range(0, len(counter_list), 3):
+    for i in range(0, len(counter_list), 2):
         first_member = counter_list[i]
         second_member = counter_list[i+1]
-        third_member = counter_list[i+2]
-        members_array = [users[first_member][0].to_dict()['uid'], users[second_member][0].to_dict()['uid'], users[third_member][0].to_dict()['uid']]
+        members_array = [users[first_member][0].to_dict()['uid'], users[second_member][0].to_dict()['uid']]
         group_json = {'last_updated': datetime.datetime.now(), "members": members_array}
         message_json = {"message": "Welcome to your new generated conversation", "sender_display_name": "System", 'time_sent': datetime.datetime.now()}
         new_group_ref = db.collection('groups').document()

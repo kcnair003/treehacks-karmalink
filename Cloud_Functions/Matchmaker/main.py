@@ -24,10 +24,7 @@ def find_posts(tupled_user_list):
     for doc in posts_ref_docs:
         doc_dict = doc.to_dict()
         doc_score = (doc_dict['Cloud_Polarity']+doc_dict['VADER_Polarity']+doc_dict['TextBlob_Polarity']/3)*doc_dict['TextBlob_Subjectivity']
-        try:
-            new_user_list[doc_dict['user_id']] = (new_user_list[doc_dict['user_id']][0], new_user_list[doc_dict['user_id']][0]+doc_score)
-        except Exception:
-            traceback.print_exc
+        new_user_list[doc_dict['user_id']] = (new_user_list[doc_dict['user_id']][0], new_user_list[doc_dict['user_id']][0]+doc_score)
     return new_user_list
 
 def delete_groups():
@@ -93,7 +90,9 @@ def matchmaker(event, context):
     try:
         if requested_learning_boolean == True:
             try:
-                data = create_groups(find_posts(find_users))
+                user_list = find_users()
+                post_sentiment_list = find_posts(user_list)
+                data = create_groups(post_sentiment_list)
                 delete_groups()
                 make_conversations(data)
             except Exception:
@@ -101,7 +100,9 @@ def matchmaker(event, context):
             return
         else:
             try:
-                data = create_random_groups(find_posts(find_users))
+                user_list = find_users()
+                post_sentiment_list = find_posts(user_list)
+                data = create_random_groups(post_sentiment_list)
                 delete_groups()
                 make_conversations(data)
             except Exception:

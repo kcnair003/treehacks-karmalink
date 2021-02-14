@@ -122,7 +122,7 @@ class _HomeState extends State<Home> {
   Color notSelected = Colors.lightBlue;
 
   addToDisplayList(bool isFeed) {
-    getPosts();
+    // getPosts();
     print(posts.length);
     print(posts.length);
     displayList.add(Expanded(
@@ -145,7 +145,7 @@ class _HomeState extends State<Home> {
       displayList.add(Expanded(
         child: Container(
           height: double.infinity,
-          color: Colors.lightGreen,
+          color: Colors.white,
           child: Column(
             children: [
               new Padding(
@@ -155,8 +155,8 @@ class _HomeState extends State<Home> {
                   decoration: new BoxDecoration(
                     shape: BoxShape.rectangle,
                     border: new Border.all(
-                      color: Colors.black,
-                      width: 1.0,
+                      color: Colors.redAccent,
+                      width: 3.0,
                     ),
                   ),
                   child: new TextField(

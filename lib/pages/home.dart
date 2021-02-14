@@ -26,22 +26,12 @@ final usersRef = FirebaseFirestore.instance.collection('users');
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-// ////////   THIS IS HOMESTATE
 class _HomeState extends State<Home> {
   String pendingPost = "";
 
@@ -51,7 +41,7 @@ class _HomeState extends State<Home> {
   int pageIndex = 0;
   List<Widget> displayWidgets;
   List<Map> posts = [];
-  bool showChat = false;
+  bool showNewPost = false;
   List<Widget> displayList = [];
   // get width => null;
   @override
@@ -150,10 +140,6 @@ class _HomeState extends State<Home> {
           color: Colors.lightGreen,
           child: Column(
             children: [
-              // Container(
-              //   width: showChat ? 200 : double.infinity,
-              //   height: 200,
-              // ),
               new Padding(
                 padding: EdgeInsets.all(10),
                 child: Container(
@@ -166,6 +152,9 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   child: new TextField(
+                    onChanged: (val) {
+                      changeContent(val);
+                    },
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     textAlign: TextAlign.left,
@@ -181,23 +170,27 @@ class _HomeState extends State<Home> {
 
               Padding(
                 padding: EdgeInsets.all(10),
-                child: TextButton(
+                child: ElevatedButton(
                   onPressed: () {
                     final currUser = FirebaseAuth.instance.currentUser;
+
                     if (pendingPost != "") {
                       print("OutlineddButton onPressed");
-                      print(currUser);
-                      print(isAuth);
+                      print(currUser); // null
+                      print(isAuth); // true
                       print(pendingPost);
-                      usersRef.doc(currUser.uid).get().then((value) {
-                        postsRef.add({
-                          "message": pendingPost,
-                          "user_id": currUser.uid,
-                          "time_posted": DateTime.now(),
-                          "username": value.data()["username"]
-                        });
-                      });
+                      // usersRef.doc(currUser.uid).get().then((value) {
+                      //   postsRef.add({
+                      //     "message": pendingPost,
+                      //     "user_id": currUser.uid,
+                      //     "time_posted": DateTime.now(),
+                      //     "username": value.data()["username"] == null
+                      //         ? "Person Pear"
+                      //         : value.data()["username"]
+                      //   });
+                      // });
                       // print("Post ADDED TO FIREBASE");
+                      manageWidgets();
                     }
                   },
                   child: Row(
@@ -251,7 +244,7 @@ class _HomeState extends State<Home> {
 
   manageWidgets() {
     setState(() {
-      showChat = !showChat;
+      showNewPost = !showNewPost;
     });
     // List<Widget> added = displayList;
   }
@@ -267,14 +260,14 @@ class _HomeState extends State<Home> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: GestureDetector(
               onTap: manageWidgets,
-              child: Icon(Icons.post_add_rounded),
+              child: Icon(Icons.post_add_rounded, size: 45),
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: GestureDetector(
               onTap: manageWidgets,
-              child: Icon(Icons.chat_bubble),
+              child: Icon(Icons.chat_bubble, size: 36),
             ),
           ),
           Padding(
@@ -284,7 +277,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Row(
-        children: showChat ? getAll() : getFeed(),
+        children: showNewPost ? getAll() : getFeed(),
       ),
     );
   }

@@ -16,7 +16,7 @@ class PostCard extends StatelessWidget {
           Icon(
             Icons.person,
             size: 60,
-            color: Colors.black,
+            color: Colors.lightBlue[100],
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

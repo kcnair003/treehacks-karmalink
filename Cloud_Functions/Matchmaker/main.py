@@ -6,10 +6,6 @@ import traceback
 import datetime
 import pandas as pd
 import numpy as np
-import sys
-sys.path.append('/user_code/PathCrawler.py')
-from PathCrawler import PathList, data_retrieval, dict_convert_formatted, send_download_alert, send_download_request_info
-from flask import escape
 
 # Establishes the Cloud Firestore client
 db = firestore.Client()

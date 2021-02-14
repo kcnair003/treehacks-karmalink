@@ -3,8 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:treehacks2021/blocs/blocs.dart';
+import 'package:treehacks2021/models/models.dart';
+import 'package:treehacks2021/my_navigator.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
 import 'package:treehacks2021/pages/profile.dart';
 import 'package:treehacks2021/pages/search.dart';
@@ -15,6 +19,8 @@ import 'package:treehacks2021/widgets/nav_bar_item.dart';
 import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
 import 'package:provider/provider.dart';
 import 'package:treehacks2021/widgets/postcard.dart';
+import 'package:treehacks2021/widgets/theme_switch.dart';
+import 'chat.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final postsRef = FirebaseFirestore.instance.collection('posts');
@@ -24,19 +30,23 @@ final usersRef = FirebaseFirestore.instance.collection('users');
 // import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
 
-  final String title;
+//   Home({Key key, this.title}) : super(key: key);
+
+//   final String title;
+
+  Home({Key key}) : super(key: key);
+
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  String pendingPost = "";
+//   String pendingPost = "";
 
-  int _counter = 0;
-  bool isAuth = false;
+//   int _counter = 0;
+
   PageController pageController;
   int pageIndex = 0;
   List<Widget> displayWidgets;
@@ -44,6 +54,9 @@ class _HomeState extends State<Home> {
   bool showNewPost = false;
   List<Widget> displayList = [];
   // get width => null;
+
+  User _user;
+
   @override
   void initState() {
     // final currUser = FirebaseAuth.instance.currentUser;
@@ -51,21 +64,26 @@ class _HomeState extends State<Home> {
     addToDisplayList(true);
     super.initState();
 
-    pageController = PageController();
-    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      if (account != null) {
-        print(account);
-        print("enddddd");
+//     pageController = PageController();
+//     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+//       if (account != null) {
+//         print(account);
+//         print("enddddd");
 
-        setState(() {
-          isAuth = true;
-        });
-      } else {
-        setState(() {
-          isAuth = false;
-        });
-      }
-    });
+//         setState(() {
+//           isAuth = true;
+//         });
+//       } else {
+//         setState(() {
+//           isAuth = false;
+//         });
+//       }
+
+    _user = context.read<AuthCubit>().state.user;
+
+    pageController = PageController();
+    displayWidgets = displayList;
+
   }
 
   getPosts() {
@@ -88,14 +106,6 @@ class _HomeState extends State<Home> {
   void dispose() {
     pageController.dispose();
     super.dispose();
-  }
-
-  login() {
-    googleSignIn.signIn();
-  }
-
-  logout() {
-    googleSignIn.signOut();
   }
 
   onPageChanged(int pageIndex) {
@@ -242,6 +252,7 @@ class _HomeState extends State<Home> {
     return displayList;
   }
 
+
   manageWidgets() {
     setState(() {
       showNewPost = !showNewPost;
@@ -249,6 +260,10 @@ class _HomeState extends State<Home> {
     // List<Widget> added = displayList;
   }
 
+  navigateToChat() {
+    MyNavigator.push(ChatView());
+
+  }
   Scaffold buildAuthScreen() {
     // getPosts();
     // addToDisplayList();
@@ -266,7 +281,7 @@ class _HomeState extends State<Home> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: GestureDetector(
-              onTap: manageWidgets,
+              onTap: navigateToChat,
               child: Icon(Icons.chat_bubble, size: 36),
             ),
           ),
@@ -280,45 +295,65 @@ class _HomeState extends State<Home> {
         children: showNewPost ? getAll() : getFeed(),
       ),
     );
-  }
 
-  Widget buildNoAuthScreen(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(
-              image: AssetImage('assets/images/logo.png'),
-              width: 500,
-              height: 250,
-            ),
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeCubit(_user),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Karmalink or DialogueDen'),
+          actions: [
+            ThemeSwitch(),
+            SizedBox(width: 16),
+            MyDropDown(),
+            SizedBox(width: 16),
             GestureDetector(
-                onTap: login,
-                child: Container(
-                  width: 260,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/signinBtn.png'),
-                    ),
-                  ),
-                )),
-            Consumer<ThemeNotifier>(
-                builder: (context, model, space) => Switch(
-                    value: model.switchUse,
-                    onChanged: (switchUse) => model.toggle())),
+              onTap: () => navigateToChat(),
+              child: Icon(Icons.chat_bubble),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: GestureDetector(
+                onTap: () {
+                  context.read<AuthCubit>().signOut();
+                },
+                child: Icon(Icons.logout),
+              ),
+            ),
           ],
+        ),
+        body: Row(
+          children: showChat ? getAll() : getFeed(),
         ),
       ),
     );
   }
+}
 
+class MyDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return isAuth ? buildAuthScreen() : buildNoAuthScreen(context);
+    bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+    return DropdownButton(
+      value: likeMinded,
+      iconEnabledColor: Colors.white,
+      underline: Container(
+        height: 2,
+        color: Colors.white,
+      ),
+      onChanged: (_) => context.read<HomeCubit>().toggleLikeMinded(),
+      items: [
+        DropdownMenuItem(
+          value: true,
+          child: Text('like-minded'),
+        ),
+        DropdownMenuItem(
+          value: false,
+          child: Text('different-minded'),
+        ),
+      ],
+    );
   }
 }

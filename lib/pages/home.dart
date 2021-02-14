@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
@@ -14,7 +16,8 @@ import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
 import 'package:provider/provider.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
-
+final postsRef = FirebaseFirestore.instance.collection('posts');
+final usersRef = FirebaseFirestore.instance.collection('users');
 // class Home extends StatefulWidget {
 //   Home({Key key}) : super(key: key);
 // import 'package:provider/provider.dart';
@@ -43,10 +46,12 @@ class _HomeState extends State<Home> {
   PageController pageController;
   int pageIndex = 0;
   List<Widget> displayWidgets;
+  List<Object> posts;
   bool showChat = false;
   // get width => null;
   @override
   void initState() {
+    posts = getPosts();
     super.initState();
     pageController = PageController();
     displayWidgets = displayList;
@@ -61,6 +66,14 @@ class _HomeState extends State<Home> {
           isAuth = false;
         });
       }
+    });
+  }
+
+  getPosts() {
+    postsRef.get().then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((DocumentSnapshot doc) {
+        ;
+      });
     });
   }
 

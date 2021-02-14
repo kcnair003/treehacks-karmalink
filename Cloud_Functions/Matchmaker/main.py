@@ -46,7 +46,7 @@ def create_groups(tupled_user_list):
         list_of_values.append(value[1])
     weights_norm = np.linalg.norm(np.array(list_of_values))
     weights_normed = np.array([np.nan_to_num(abs(weight/weights_norm)) for weight in list_of_values])
-    weights_array = np.nan_to_num(weights_normed / weights_normed.sum())
+    weights_array = weights_normed / weights_normed.sum()
     weights_scaled = weights_array.tolist()
     temp_counter_list = random.choices(list_of_keys, weights=weights_scaled, k=len(list_of_keys)*2)
     counter_list = []

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treehacks2021/widgets/dropdown.dart';
 import '../models/src/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:treehacks2021/blocs/blocs.dart';
@@ -276,31 +277,7 @@ class _HomeState extends State<Home> {
   //     );
   //   }
   // }
-  // class MyDropDown extends StatelessWidget {
-  //   @override
-  //   Widget build(BuildContext context) {
-  //     bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
-  //     return DropdownButton(
-  //       value: likeMinded,
-  //       iconEnabledColor: Colors.white,
-  //       underline: Container(
-  //         height: 2,
-  //         color: Colors.white,
-  //       ),
-  //       onChanged: (_) => context.read<HomeCubit>().toggleLikeMinded(),
-  //       items: [
-  //         DropdownMenuItem(
-  //           value: true,
-  //           child: Text('like-minded'),
-  //         ),
-  //         DropdownMenuItem(
-  //           value: false,
-  //           child: Text('different-minded'),
-  //         ),
-  //       ],
-  //     );
-  //   }
-  // }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -311,7 +288,7 @@ class _HomeState extends State<Home> {
           actions: [
             ThemeSwitch(),
             SizedBox(width: 16),
-            // MyDropDown(),
+            MyDropDown(),
             SizedBox(width: 16),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),

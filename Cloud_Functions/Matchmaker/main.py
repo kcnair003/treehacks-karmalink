@@ -25,7 +25,7 @@ def find_posts(tupled_user_list):
     for doc in posts_ref_docs:
         doc_dict = doc.to_dict()
         doc_score = (doc_dict['Cloud_Polarity']+doc_dict['VADER_Polarity']+doc_dict['TextBlob_Polarity']/3)*doc_dict['TextBlob_Subjectivity']
-        new_user_list[doc_dict['user_id']] = (new_user_list[doc_dict['user_id']][0], new_user_list[doc_dict['user_id']][1]+doc_score)
+        new_user_list[doc_dict['user_id']] = (new_user_list[doc_dict['user_id']][0], new_user_list[doc_dict['user_id']][1]+doc_score/2)
     return new_user_list
 
 def delete_groups():
@@ -44,14 +44,7 @@ def create_groups(tupled_user_list):
     for key, value in tupled_user_list.items():
         list_of_keys.append(key)
         list_of_values.append(value[1])
-    temp_counter_list = random.choices(list_of_keys, weights=list_of_values, k=len(list_of_keys)*2)
-    counter_list = []
-    for i in range(len(temp_counter_list)):
-        if temp_counter_list[i] == temp_counter_list[i+1] and i<len(temp_counter_list)-2:
-            counter_list.append(temp_counter_list[i])
-            i += 1
-        else:
-            counter_list.append(temp_counter_list[i])
+    counter_list = random.choices(list_of_keys, weights=list_of_values, k=len(list_of_keys)*2)
     group_data = (tupled_user_list, counter_list)
     return group_data
 
@@ -59,21 +52,14 @@ def create_random_groups(tupled_user_list):
     list_of_keys = []
     for key in tupled_user_list:
         list_of_keys.append(key)
-    temp_counter_list = random.choices(list_of_keys, k=len(list_of_keys)*2)
-    counter_list = []
-    for i in range(len(temp_counter_list)):
-        if temp_counter_list[i] == temp_counter_list[i+1] and i<len(temp_counter_list)-2:
-            counter_list.append(temp_counter_list[i])
-            i += 1
-        else:
-            counter_list.append(temp_counter_list[i])
+    counter_list = random.choices(list_of_keys, k=len(list_of_keys)*2)
     group_data = (tupled_user_list, counter_list)
     return group_data
 
 def make_conversations(group_data):
     users = group_data[0]
     counter_list = group_data[1]
-    for i in range(0, len(counter_list), 2):
+    for i in range(0, len(counter_list), 3):
         first_member = counter_list[i]
         second_member = counter_list[i+1]
         members_array = [users[first_member][0].to_dict()['uid'], users[second_member][0].to_dict()['uid']]

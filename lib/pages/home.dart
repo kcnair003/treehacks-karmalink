@@ -22,6 +22,9 @@ import 'package:provider/provider.dart';
 import 'package:treehacks2021/widgets/postcard.dart';
 import 'package:treehacks2021/widgets/theme_switch.dart';
 import 'chat.dart';
+// import ‘package:flutter/material.dart’;
+import '../blocs/home/home_cubit.dart';
+// import ‘package:provider/provider.dart’;
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final postsRef = FirebaseFirestore.instance.collection('posts');
@@ -322,18 +325,52 @@ class _HomeState extends State<Home> {
   }
 }
 
-class MyDropDown extends StatefulWidget {
-  MyDropDown({Key key}) : super(key: key);
-  @override
-  _MyDropDownState createState() => _MyDropDownState();
-}
+// class MyDropDown extends StatefulWidget {
+//   MyDropDown({Key key}) : super(key: key);
+//   @override
+//   _MyDropDownState createState() => _MyDropDownState();
+// }
 
-class _MyDropDownState extends State<MyDropDown> {
+// class _MyDropDownState extends State<MyDropDown> {
+//   @override
+//   Widget build(BuildContext context) {
+//     // bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+//     return DropdownButton(
+//       value: true,
+//       iconEnabledColor: Colors.white,
+//       underline: Container(
+//         height: 2,
+//         color: Colors.white,
+//       ),
+//       onChanged: (_) => context.read<HomeCubit>().toggleLikeMinded(),
+//       items: [
+//         DropdownMenuItem(
+//           value: true,
+//           child: Text("like-minded"),
+//         ),
+//         DropdownMenuItem(
+//           value: false,
+//           child: Text("different-minded"),
+//         ),
+//       ],
+//     );
+//   }
+// }
+// class MyDropDown extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+//     return
+//   }
+// }
+class MyDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+    bool likeMinded = context.watch<HomeCubit>().state.user != null
+        ? context.watch<HomeCubit>().state.user.likeMinded
+        : true;
     return DropdownButton(
-      value: true,
+      value: likeMinded,
       iconEnabledColor: Colors.white,
       underline: Container(
         height: 2,
@@ -353,10 +390,3 @@ class _MyDropDownState extends State<MyDropDown> {
     );
   }
 }
-// class MyDropDown extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
-//     return
-//   }
-// }

@@ -50,7 +50,7 @@ def create_groups(tupled_user_list):
     weights_scaled = weights_array.tolist()
     temp_counter_list = random.choices(list_of_keys, weights=weights_scaled, k=len(list_of_keys)*2)
     counter_list = []
-    for i in range(temp_counter_list):
+    for i in range(len(temp_counter_list)):
         if temp_counter_list[i] == temp_counter_list[i+1]:
             counter_list.append(temp_counter_list[i])
             i += 1
@@ -65,7 +65,7 @@ def create_random_groups(tupled_user_list):
         list_of_keys.append(key)
     temp_counter_list = random.choices(list_of_keys, k=len(list_of_keys)*2)
     counter_list = []
-    for i in range(temp_counter_list):
+    for i in range(len(temp_counter_list)):
         if temp_counter_list[i] == temp_counter_list[i+1]:
             counter_list.append(temp_counter_list[i])
             i += 1

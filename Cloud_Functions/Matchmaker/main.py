@@ -66,7 +66,7 @@ def make_conversations(group_data):
     for i in range(0, len(counter_list), 2):
         first_member = counter_list[i]
         second_member = counter_list[i+1]
-        members_array = [users[first_member][0].to_dict()['uid'], users[second_member][0].to_dict()['uid']]
+        members_array = [users[first_member][0].get().to_dict()['uid'], users[second_member][0].get().to_dict()['uid']]
         group_json = {'last_updated': datetime.datetime.now(), "members": members_array}
         db.collection('groups').add(group_json)
 

@@ -61,7 +61,7 @@ def calculate_post_polarity(event, context):
     # Finds the name of the user
     post_ref = db.collection(u'posts').document(post_ID)
     # Defines the dictionaries associated with the keys 'journal_text' and 'timestamp'
-    post_text_dict = post_ref.to_dict()
+    post_text_dict = post_ref.get().to_dict()
     #timestamp_dict = fields_dict['timestamp']
     # Defines the journal text (string) and the timestamp (string)
     post_text = post_text_dict['message']

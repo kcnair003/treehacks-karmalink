@@ -74,9 +74,9 @@ class _HomeState extends State<Home> {
         Map temp = new Map.from(doc.data());
         print(temp["user_id"]);
         usersRef.doc(temp["user_id"]).get().then((value) {
-          temp["username"] = value.data()["username"] == null
+          temp["display_name"] = value.data()["display_name"] == null
               ? "person"
-              : value.data()["username"];
+              : value.data()["display_name"];
           print(temp);
           posts.add(temp);
         });
@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
               print("above is index");
               print(posts[index]);
               return PostCard(
-                  posts[index]["message"], posts[index]["username"]);
+                  posts[index]["message"], posts[index]["display_name"]);
             }),
       ),
     ));

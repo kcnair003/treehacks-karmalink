@@ -12,12 +12,10 @@ import 'package:treehacks2021/pages/upload.dart';
 import 'package:treehacks2021/widgets/nav_bar_button.dart';
 import 'package:treehacks2021/widgets/nav_bar_item.dart';
 
-final GoogleSignIn googleSignIn = GoogleSignIn();
-
-class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
 import 'package:provider/provider.dart';
 import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
+
+final GoogleSignIn googleSignIn = GoogleSignIn();
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -270,30 +268,6 @@ class _HomeState extends State<Home> {
   //   );
   // }
 
-  Widget buildNoAuthScreen() {
-    return Column(
-      children: [
-        Image(
-          image: AssetImage('assets/images/logo.png'),
-          width: 500,
-          height: 250,
-        ),
-        GestureDetector(
-          onTap: login,
-          child: Container(
-            width: 260,
-            height: 60,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/signinBtn.png'),
-              ),
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-  
   Widget buildNoAuthScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -343,11 +317,7 @@ class _HomeState extends State<Home> {
             ],
           ),
         )
-
-      ],
-
       ),
-
     );
   }
 

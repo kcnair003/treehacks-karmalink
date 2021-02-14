@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
       title: appName,
       theme: themeNotifier.selectedTheme,
       debugShowCheckedModeBanner: false,
-      //home: Home(title: appName),
-      home: Timeline(),
+      home: Home(title: appName),
+      //home: Timeline(),
     );
   }
 }

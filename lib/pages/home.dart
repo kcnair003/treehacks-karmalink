@@ -73,6 +73,10 @@ class _HomeState extends State<Home> {
     googleSignIn.signIn();
   }
 
+  logout() {
+    googleSignIn.signOut();
+  }
+
   onPageChanged(int pageIndex) {
     setState(() {
       this.pageIndex = pageIndex;
@@ -87,71 +91,6 @@ class _HomeState extends State<Home> {
   Color selected = Colors.orange;
   Color notSelected = Colors.lightBlue;
 
-  // Scaffold buildAuthScreen() {
-  //   double width = MediaQuery.of(context).size.width;
-  //   return Scaffold(
-  //     body: Stack(
-  //       children: [
-  //         Container(
-  //           color: Colors.white,
-  //         ),
-  //         AnimatedContainer(
-  //           margin: EdgeInsets.only(top: 79.0),
-  //           duration: Duration(milliseconds: 375),
-  //           curve: Curves.ease,
-  //           height: (width < 800) ? collapsableHeight : 0.0,
-  //           width: double.infinity,
-  //           color: Colors.blue,
-  //           child: SingleChildScrollView(
-  //             child: Column(
-  //               children: navBarItems,
-  //             ),
-  //           ),
-  //         ),
-  //         Container(
-  //           color: Colors.purple,
-  //           height: 80.0,
-  //           padding: EdgeInsets.symmetric(horizontal: 24.0),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Text(
-  //                 'NavBar',
-  //                 style: TextStyle(fontSize: 22.0, color: Colors.black),
-  //               ),
-  //               LayoutBuilder(builder: (context, constraints) {
-  //                 if (width < 800.0) {
-  //                   return NavBarButton(
-  //                     onPressed: () {
-  //                       if (collapsableHeight == 0.0) {
-  //                         setState(() {
-  //                           collapsableHeight = 240.0;
-  //                         });
-  //                       } else if (collapsableHeight == 240.0) {
-  //                         setState(() {
-  //                           collapsableHeight = 0.0;
-  //                         });
-  //                       }
-  //                     },
-  //                   );
-  //                 } else {
-  //                   return Row(
-  //                     children: navBarItems,
-  //                   );
-  //                 }
-  //               })
-  //             ],
-  //           ),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // List<Widget> navBarItems = [
-  //   NavBarItem(text: 'Feed'),
-  //   NavBarItem(text: 'Chat'),
-  // ];
   List<Widget> displayList = [
     Expanded(
       child: Container(
@@ -196,7 +135,7 @@ class _HomeState extends State<Home> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.search),
+            child: GestureDetector(onTap: logout, child: Icon(Icons.logout)),
           ),
         ],
       ),

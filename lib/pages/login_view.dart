@@ -187,7 +187,7 @@ class _CreateAccountWithEmailAndPasswordState
                 TextFormField(
                   controller: _displayNameController,
                   decoration: InputDecoration(
-                    labelText: 'Display Name',
+                    labelText: 'Choose Anonymous Display Name',
                   ),
                 ),
                 SizedBox(height: 16),

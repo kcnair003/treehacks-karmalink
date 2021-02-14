@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oil_finder/blocs/auth/auth.dart';
-import 'package:oil_finder/ui/login_view.dart';
+import '../blocs/auth/auth.dart';
+import '../ui/login_view.dart';
 
 import 'loading_view.dart';
 // import 'onboarding_view.dart';

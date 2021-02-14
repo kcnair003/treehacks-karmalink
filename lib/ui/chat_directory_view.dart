@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:oil_finder/models/models.dart';
-import 'package:oil_finder/services/services.dart';
+import '../models/models.dart';
+import '../services/services.dart';
 
 class ChatDirectoryView extends StatelessWidget {
   @override

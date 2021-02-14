@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oil_finder/blocs/auth/auth.dart';
-import 'package:oil_finder/blocs/pagination/pagination.dart';
-import 'package:oil_finder/models/models.dart';
-import 'package:oil_finder/ui/widgets/post_view.dart';
+import '../blocs/auth/auth.dart';
+import '../blocs/pagination/pagination.dart';
+import '../models/models.dart';
+import '../ui/widgets/post_view.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
 

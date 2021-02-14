@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:oil_finder/blocs/pagination/pagination.dart';
-import 'package:oil_finder/models/models.dart';
+import '../../blocs/pagination/pagination.dart';
+import '../../models/models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostView extends StatefulWidget {

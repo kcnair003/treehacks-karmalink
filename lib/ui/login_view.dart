@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oil_finder/blocs/auth/auth.dart';
-import 'package:oil_finder/ui/widgets/obscurable_text_field.dart';
+import '../flutter_bloc.dart';
+import '../blocs/auth/auth.dart';
+import '../ui/widgets/obscurable_text_field.dart';
 import 'package:provider/provider.dart';
 
 import 'ui_helper.dart';

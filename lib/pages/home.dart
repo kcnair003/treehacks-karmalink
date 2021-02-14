@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:treehacks2021/blocs/blocs.dart';
+import 'package:treehacks2021/models/models.dart';
 import 'package:treehacks2021/my_navigator.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
 import 'package:treehacks2021/pages/profile.dart';
@@ -23,62 +26,35 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 // import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  Home({Key key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  int _counter = 0;
-  bool isAuth = true;
   PageController pageController;
   int pageIndex = 0;
   List<Widget> displayWidgets;
   bool showChat = false;
   // get width => null;
+
+  User _user;
+
   @override
   void initState() {
     super.initState();
+
+    _user = context.read<AuthCubit>().state.user;
+
     pageController = PageController();
     displayWidgets = displayList;
-    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      if (account != null) {
-        print(account);
-        setState(() {
-          isAuth = true;
-        });
-      } else {
-        setState(() {
-          isAuth = false;
-        });
-      }
-    });
   }
 
   @override
   void dispose() {
     pageController.dispose();
     super.dispose();
-  }
-
-  login() {
-    googleSignIn.signIn();
-  }
-
-  logout() {
-    googleSignIn.signOut();
   }
 
   onPageChanged(int pageIndex) {
@@ -125,69 +101,63 @@ class _HomeState extends State<Home> {
     MyNavigator.push(ChatView());
   }
 
-  manageWidgets() {
-    setState(() {
-      showChat = !showChat;
-    });
-    // List<Widget> added = displayList;
-  }
-
-  Scaffold buildAuthScreen() {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Karmalink or DialogueDen'),
-        actions: [
-          GestureDetector(
-            onTap: () => navigateToChat(),
-            child: Icon(Icons.chat_bubble),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: GestureDetector(onTap: logout, child: Icon(Icons.logout)),
-          ),
-        ],
-      ),
-      body: Row(
-        children: showChat ? getAll() : getFeed(),
-      ),
-    );
-  }
-
-  Widget buildNoAuthScreen(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(
-              image: AssetImage('assets/images/logo.png'),
-              width: 500,
-              height: 250,
-            ),
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeCubit(_user),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Karmalink or DialogueDen'),
+          actions: [
+            ThemeSwitch(),
+            SizedBox(width: 16),
+            MyDropDown(),
+            SizedBox(width: 16),
             GestureDetector(
-              onTap: login,
-              child: Container(
-                width: 260,
-                height: 60,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/signinBtn.png'),
-                  ),
-                ),
+              onTap: () => navigateToChat(),
+              child: Icon(Icons.chat_bubble),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: GestureDetector(
+                onTap: () {
+                  context.read<AuthCubit>().signOut();
+                },
+                child: Icon(Icons.logout),
               ),
             ),
-            ThemeSwitch(),
           ],
+        ),
+        body: Row(
+          children: showChat ? getAll() : getFeed(),
         ),
       ),
     );
   }
+}
 
+class MyDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return isAuth ? buildAuthScreen() : buildNoAuthScreen(context);
+    bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+    return DropdownButton(
+      value: likeMinded,
+      iconEnabledColor: Colors.white,
+      underline: Container(
+        height: 2,
+        color: Colors.white,
+      ),
+      onChanged: (_) => context.read<HomeCubit>().toggleLikeMinded(),
+      items: [
+        DropdownMenuItem(
+          value: true,
+          child: Text('like-minded'),
+        ),
+        DropdownMenuItem(
+          value: false,
+          child: Text('different-minded'),
+        ),
+      ],
+    );
   }
 }

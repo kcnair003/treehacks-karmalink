@@ -1,18 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
+
 import 'package:treehacks2021/models/src/user.dart';
 import 'package:treehacks2021/services/services.dart';
 
-class Group {
+class Group extends Equatable {
   final String id;
   final List<dynamic> memberUids;
   final Timestamp lastUpdated;
-  List<User> users = [];
-  String _namesToDisplay;
+  final List<User> users;
 
   Group({
     this.id,
     this.memberUids,
     this.lastUpdated,
+    this.users = const [],
   });
 
   static Group fromSnapshot(DocumentSnapshot snapshot) {
@@ -26,29 +28,45 @@ class Group {
 
   final _firestoreService = FirestoreService();
 
-  Future<void> queryMemberData() async {
+  Future<Group> queryMemberData() async {
+    List<User> _usersFetched = [];
     for (var uid in memberUids) {
-      print('querying for $uid...');
       User user = await _firestoreService.getUser(uid);
-      print(user);
-      users.add(user);
+      _usersFetched.add(user);
     }
+    return copyWith(users: _usersFetched);
   }
 
   // Exclude myUid from the list of names to display.
   String getNamesToDisplay(String myUid) {
+    List<String> namesExceptMine = [];
     for (var user in users) {
-      print(user.displayName);
-    }
-    if (_namesToDisplay == null) {
-      List<String> namesExceptMine = [];
-      for (var user in users) {
-        if (user.uid != myUid) {
-          namesExceptMine.add(user.displayName);
-        }
+      if (user.uid != myUid) {
+        namesExceptMine.add(user.displayName);
       }
-      _namesToDisplay = namesExceptMine.join(', ');
     }
-    return _namesToDisplay;
+    return namesExceptMine.join(', ');
+  }
+
+  @override
+  String toString() {
+    return 'groupId: $id';
+  }
+
+  @override
+  List<Object> get props => [id, memberUids, lastUpdated, users];
+
+  Group copyWith({
+    String id,
+    List<dynamic> memberUids,
+    Timestamp lastUpdated,
+    List<User> users,
+  }) {
+    return Group(
+      id: id ?? this.id,
+      memberUids: memberUids ?? this.memberUids,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+      users: users ?? this.users,
+    );
   }
 }

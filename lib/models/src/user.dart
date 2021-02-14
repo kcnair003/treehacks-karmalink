@@ -16,19 +16,22 @@ class User extends Equatable {
   final String email;
   final String displayName;
 
+  /// True represents like-minded and false represents different-minded.
+  final bool likeMinded;
+
   const User({
     this.status = UserLifeCycle.unknown,
     this.uid = '',
     this.email,
     this.displayName,
+    this.likeMinded,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'status': status,
       'uid': uid,
       'email': email,
-      'displayName': displayName,
+      'display_name': displayName,
     };
   }
 
@@ -37,6 +40,7 @@ class User extends Equatable {
       uid: map['uid'],
       email: map['email'],
       displayName: map['display_name'],
+      likeMinded: map['like_minded'] ?? true,
     );
   }
 
@@ -44,11 +48,13 @@ class User extends Equatable {
     String uid,
     String email,
     String displayName,
+    bool likeMinded,
   }) {
     return User(
       uid: uid ?? this.uid,
       email: email ?? this.email,
       displayName: displayName ?? this.displayName,
+      likeMinded: likeMinded ?? this.likeMinded,
     );
   }
 
@@ -59,6 +65,7 @@ class User extends Equatable {
       uid,
       email,
       displayName,
+      likeMinded,
     ];
   }
 

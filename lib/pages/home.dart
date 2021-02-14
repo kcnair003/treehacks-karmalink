@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,11 @@ import 'package:treehacks2021/widgets/nav_bar_item.dart';
 import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
 import 'package:provider/provider.dart';
 
+import 'create_account.dart';
+
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final usersRef = FirebaseFirestore.instance.collection('users');
+final DateTime timestamp = DateTime.now();
 
 // class Home extends StatefulWidget {
 //   Home({Key key}) : super(key: key);
@@ -49,18 +54,57 @@ class _HomeState extends State<Home> {
     super.initState();
     pageController = PageController();
     displayWidgets = displayList;
-    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      if (account != null) {
-        print(account);
-        setState(() {
-          isAuth = true;
-        });
-      } else {
-        setState(() {
-          isAuth = false;
-        });
-      }
+    googleSignIn.onCurrentUserChanged.listen((account) {
+      handleSignIn(account);
+    }, onError: (err) {
+      print('error signing in: $err');
     });
+
+    //Reauthenticate user when app is opened
+    googleSignIn.signInSilently(suppressErrors: false).then((account) {
+      handleSignIn(account);
+    }).catchError((err) {
+      print('Error signing in: $err');
+    });
+  }
+
+  handleSignIn(GoogleSignInAccount account) {
+    if (account != null) {
+      print('User signed in!: $account');
+      createUserInFirestore();
+      print(account);
+      setState(() {
+        isAuth = true;
+      });
+    } else {
+      setState(() {
+        isAuth = false;
+      });
+    }
+  }
+
+
+  createUserInFirestore() async {
+    // 1) Check if user exists in users collection in database (accoridng to their id)
+    final GoogleSignInAccount user = googleSignIn.currentUser;
+    final DocumentSnapshot doc = await usersRef.doc(user.id).get();
+
+    // 2) If the user doesn't exist, then take them to the create account page
+    if (!doc.exists) {
+      final username = await Navigator.push(context, MaterialPageRoute(builder: (context) => 
+        CreateAccount()));
+    
+    // 3) Get user name from create account and use it to make new user document in users collection
+      usersRef.doc(user.id).set({
+        "id": user.id,
+        "username": username,
+        "photoUrl": user.photoUrl,
+        "email": user.email,
+        "displayName": user.displayName,
+        "bio": "",
+        "timestamp": timestamp
+      });
+    }
   }
 
   @override

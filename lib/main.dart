@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'dynamicmodels/ThemeSelection.dart';
 import 'constants/Themes.dart';
 import 'pages/home.dart';
+import 'pages/timeline.dart';
 
 void main() {
   runApp(ChangeNotifierProvider<ThemeNotifier>(
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
       title: appName,
       theme: themeNotifier.selectedTheme,
       debugShowCheckedModeBanner: false,
-      home: Home(title: appName),
+      //home: Home(title: appName),
+      home: Timeline(),
     );
   }
 }

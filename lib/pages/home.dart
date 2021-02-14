@@ -47,11 +47,11 @@ class _HomeState extends State<Home> {
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              stops: [
-                0.2,
+ /*              stops: [
                 0.5,
-                0.8,
-              ],
+                //0.5,
+                0.5,
+              ], */
             colors: [
               Colors.blue,
               Colors.white,

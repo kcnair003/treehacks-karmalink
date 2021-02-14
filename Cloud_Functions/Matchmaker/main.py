@@ -5,6 +5,7 @@ import traceback
 import datetime
 import pandas as pd
 import numpy as np
+import random
 
 # Establishes the Cloud Firestore client
 db = firestore.Client()
@@ -47,7 +48,14 @@ def create_groups(tupled_user_list):
     weights_normed = np.array([np.nan_to_num(abs(weight/weights_norm)) for weight in list_of_values])
     weights_array = np.nan_to_num(weights_normed / weights_normed.sum())
     weights_scaled = weights_array.tolist()
-    counter_list = np.random.choice(list_of_keys, len(list_of_keys), replace=False, p=weights_scaled)
+    temp_counter_list = random.choices(list_of_keys, weights=weights_scaled, k=len(list_of_keys)*2)
+    counter_list = []
+    for i in range(temp_counter_list):
+        if temp_counter_list[i] == temp_counter_list[i+1]:
+            counter_list.append(temp_counter_list[i])
+            i += 1
+        else:
+            counter_list.append(temp_counter_list[i])
     group_data = (tupled_user_list, counter_list)
     return group_data
 
@@ -55,7 +63,14 @@ def create_random_groups(tupled_user_list):
     list_of_keys = []
     for key in tupled_user_list:
         list_of_keys.append(key)
-    counter_list = np.random.choice(list_of_keys, len(list_of_keys), replace=False)
+    temp_counter_list = random.choices(list_of_keys, k=len(list_of_keys)*2)
+    counter_list = []
+    for i in range(temp_counter_list):
+        if temp_counter_list[i] == temp_counter_list[i+1]:
+            counter_list.append(temp_counter_list[i])
+            i += 1
+        else:
+            counter_list.append(temp_counter_list[i])
     group_data = (tupled_user_list, counter_list)
     return group_data
 

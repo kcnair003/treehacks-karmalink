@@ -17,13 +17,13 @@ class _TimelineState extends State<Timeline> {
     super.initState();
   }
   
-  getUsers() {
-    usersRef.get().then((QuerySnapshot snapshot) {
-      snapshot.docs.forEach((DocumentSnapshot doc) {
-        print(doc.data());
-      });
-
+  getUsers() async {
+    final QuerySnapshot documents = await usersRef.get();
+    
+    documents.docs.forEach((DocumentSnapshot doc) {
+      print(doc.data());
     });
+    
   }
 
   @override

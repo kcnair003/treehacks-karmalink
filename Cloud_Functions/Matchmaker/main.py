@@ -20,13 +20,13 @@ def find_users():
  
 def find_posts(tupled_user_list):
     # Deletes any posts associated with the user in the "posts" collection, as well as any comments associated with that post
+    new_user_list = tupled_user_list
     posts_ref_docs = db.collection(u'posts').stream()
     for doc in posts_ref_docs:
-        doc_dict = doc.get().to_dict()
+        doc_dict = doc.to_dict()
         doc_score = (doc_dict['Cloud_Polarity']+doc_dict['VADER_Polarity']+doc_dict['TextBlob_Polarity']/3)*doc_dict['TextBlob_Subjectivity']
-        tupled_user_list[doc_dict['user_id']][1] += doc_score
-    
-    return tupled_user_list
+        new_user_list[doc_dict['user_id']] = (new_user_list[doc_dict['user_id']][0], new_user_list[doc_dict['user_id']][0]+doc_score)
+    return new_user_list
 
 def delete_groups():
     # Deletes any posts associated with the user in the "posts" collection, as well as any comments associated with that post

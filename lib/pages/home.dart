@@ -17,6 +17,7 @@ import 'create_account.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final usersRef = FirebaseFirestore.instance.collection('users');
+final DateTime timestamp = DateTime.now();
 
 // class Home extends StatefulWidget {
 //   Home({Key key}) : super(key: key);
@@ -90,10 +91,20 @@ class _HomeState extends State<Home> {
 
     // 2) If the user doesn't exist, then take them to the create account page
     if (!doc.exists) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => 
+      final username = await Navigator.push(context, MaterialPageRoute(builder: (context) => 
         CreateAccount()));
-    }
+    
     // 3) Get user name from create account and use it to make new user document in users collection
+      usersRef.doc(user.id).set({
+        "id": user.id,
+        "username": username,
+        "photoUrl": user.photoUrl,
+        "email": user.email,
+        "displayName": user.displayName,
+        "bio": "",
+        "timestamp": timestamp
+      });
+    }
   }
 
   @override

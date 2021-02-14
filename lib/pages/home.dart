@@ -321,3 +321,42 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+class MyDropDown extends StatefulWidget {
+  MyDropDown({Key key}) : super(key: key);
+  @override
+  _MyDropDownState createState() => _MyDropDownState();
+}
+
+class _MyDropDownState extends State<MyDropDown> {
+  @override
+  Widget build(BuildContext context) {
+    // bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+    return DropdownButton(
+      value: true,
+      iconEnabledColor: Colors.white,
+      underline: Container(
+        height: 2,
+        color: Colors.white,
+      ),
+      onChanged: (_) => context.read<HomeCubit>().toggleLikeMinded(),
+      items: [
+        DropdownMenuItem(
+          value: true,
+          child: Text("like-minded"),
+        ),
+        DropdownMenuItem(
+          value: false,
+          child: Text("different-minded"),
+        ),
+      ],
+    );
+  }
+}
+// class MyDropDown extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     bool likeMinded = context.watch<HomeCubit>().state.user.likeMinded;
+//     return
+//   }
+// }

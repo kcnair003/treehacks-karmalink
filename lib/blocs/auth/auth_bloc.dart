@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:oil_finder/locator.dart';
-import 'package:oil_finder/ui/auth_view.dart';
-import 'package:oil_finder/ui/ui_helper.dart';
+import '../../locator.dart';
+import '../../ui/auth_view.dart';
+import '../../ui/ui_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/models.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:treehacks2021/pages/activity_feed.dart';
@@ -11,8 +10,6 @@ import 'package:treehacks2021/pages/timeline.dart';
 import 'package:treehacks2021/pages/upload.dart';
 import 'package:treehacks2021/widgets/nav_bar_button.dart';
 import 'package:treehacks2021/widgets/nav_bar_item.dart';
-import 'package:provider/provider.dart';
-import 'package:treehacks2021/dynamicmodels/ThemeSelection.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -306,10 +303,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
             )),
-            Consumer<ThemeNotifier>(
-                builder: (context, model, space) => Switch(
-                    value: model.switchUse,
-                    onChanged: (switchUse) => model.toggle())),
           ],
         ),
       )),

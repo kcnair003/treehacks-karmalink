@@ -10,6 +10,8 @@ import 'blocs/my_bloc_observer.dart';
 import 'services/services.dart';
 import 'ui/ui_helper.dart';
 import 'locator.dart';
+import 'pages/chat.dart';
+import 'pages/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: MyNavigator.navigatorKey,
         theme: context.watch<ThemeCubit>().state,
         // home: AuthView(),
-        home: Home(title: 'DialogueDen'),
+        home: Chat(title: 'DialogueDen'),
       ),
     );
   }

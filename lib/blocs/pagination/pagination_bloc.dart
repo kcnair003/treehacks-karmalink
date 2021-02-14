@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:oil_finder/locator.dart';
+import '../../locator.dart';
 import '../../models/models.dart';
 
 import 'pagination_state.dart';

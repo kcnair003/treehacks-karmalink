@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:oil_finder/models/models.dart';
+import '../../models/models.dart';
 
 class FirestoreService {
   final FirebaseFirestore _instance = FirebaseFirestore.instance;

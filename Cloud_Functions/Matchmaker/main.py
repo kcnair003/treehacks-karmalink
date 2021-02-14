@@ -40,9 +40,9 @@ def delete_groups():
 def create_groups(tupled_user_list):
     list_of_keys = []
     list_of_values = []
-    for index, (key, value) in enumerate(tupled_user_list.items()):
-        list_of_keys[index] = key
-        list_of_values[index] = value
+    for key, value in tupled_user_list.items():
+        list_of_keys.append(key)
+        list_of_values.append(value)
     weights_norm = np.linalg.norm(np.array(list_of_values))
     weights_normed = np.array([abs(weight/weights_norm) for weight in list_of_values])
     weights_array = weights_normed / weights_normed.sum()
@@ -53,8 +53,8 @@ def create_groups(tupled_user_list):
 
 def create_random_groups(tupled_user_list):
     list_of_keys = []
-    for index, key in enumerate(tupled_user_list):
-        list_of_keys[index] = key
+    for key in tupled_user_list:
+        list_of_keys.append(key)
     counter_list = np.random.choice(list_of_keys, len(list_of_keys), replace=False)
     group_data = (tupled_user_list, counter_list)
     return group_data

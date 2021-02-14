@@ -1,6 +1,7 @@
 from __future__ import print_function
 import json
 import pandas as pd
+import numpy as np
 import string
 from google.cloud import firestore
 import datetime
@@ -53,7 +54,7 @@ def test_prediction_model(test_array, test_labels):
         datadict.append('Prediction: {}\tLabel: {}'.format(response, y_test[i]))
     return datadict
 
-def calculate_polarity(request):
+def predict_user(request):
     """Responds to any HTTP request.
     Args:
         request (flask.Request): HTTP request object.
@@ -66,15 +67,15 @@ def calculate_polarity(request):
     if request.args and 'X_test' in request.args and 'y_test' in request.args:
         scores = request.args.get('X_test')
         labels = request.args.get('y_test')
-        df = pd.json_normalize(scores)
-        df2 = pd.json_normalize(labels)
+        df = np.asarray(scores)
+        df2 = np.asarray(labels)
         data = test_prediction_model(df, df2)
         return data
     elif request_json and 'X_test' in request_json and 'y_test' in request_json:
         scores = request_json['X_test']
         labels = request_json['y_test']
-        df = pd.json_normalize(scores)
-        df2 = pd.json_normalize(labels)
+        df = np.asarray(scores)
+        df2 = np.asarray(labels)
         data = test_prediction_model(df, df2)
         return data
     else:
